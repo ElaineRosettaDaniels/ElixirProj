@@ -1,7 +1,7 @@
 defmodule TheHangedMan do
-  
 
-  def hello do
+  alias TheHangedMan.Game
 
-  end
+  defdelegate new_game(), to: Game
+
 end
