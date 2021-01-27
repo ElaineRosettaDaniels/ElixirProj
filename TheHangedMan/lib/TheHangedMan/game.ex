@@ -18,7 +18,7 @@ defmodule TheHangedMan.Game do
   end
 
   def make_move(game, guess) do
-    accept_move(game, guess, MapSet.member?(game.used, guess))
+    game = accept_move(game, guess, MapSet.member?(game.used, guess))
     {game, tally(game)}
   end
 
@@ -26,8 +26,27 @@ defmodule TheHangedMan.Game do
     Map.put(game, :game_state, :already_used)
   end
 
+  def accept_move(game, guess, _already_guessed) do
+    Map.put(game, :used, MapSet.put(game.used, guess))
+    |> score_guess(Enum.member?(game.letters, guess))
+  end
+
+  def score_guess(game, _good_guess = true) do
+    new_state = MapSet.new(game.letters)
+    |> MapSet.subset?(game.used)
+    |> maybe_won()
+    Map.put(game, :game_state, new_state)
+  end
+
+  def score_guess(game, _not_good_guess) do
+    game
+  end
+
   def tally(game) do
 
   end
+
+  def maybe_won(true), do: :won
+  def maybe_won(_), do: :good_guess
 
 end
