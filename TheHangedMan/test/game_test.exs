@@ -12,8 +12,9 @@ defmodule GameTest do
 
   test "state isn't changed for :won or :lost game" do
     for state <- [:won, :lost] do
-      game = Game.new_game() |> Map.put(:game_state, state)
-      assert ^{game, _} = Game.make_move(game, "x")
+      game = Game.new_game()
+      |> Map.put(:game_state, state)
+      assert {game, _} = Game.make_move(game, "x")
     end
   end
 
